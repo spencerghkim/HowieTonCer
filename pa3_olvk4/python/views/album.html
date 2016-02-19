@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% block cont %}
+    {% if not loggedin %}
+        <li role="presentation">Viewing as spectator</li>
+        <li role="presentation" ><a href="/olvk4/pa3/">Home</a></li>
+    {% else %}
+        <li role="presentation">Logged in as {{session_username}}</li>
+        <li role="presentation" ><a href="/olvk4/pa3/">Home</a></li>
+        <li role="presentation"><a href="/olvk4/pa3/user/edit">Edit My Account</a></li>
+        <li role="presentation"><a href="/olvk4/pa3/albums">My Albums</a></li>
+        <li role="presentation"><a href="/olvk4/pa3/logout">Sign Out</a></li>
+    {% endif %}
+{% endblock %}
+{% block content %}
+    {% if not access_denied %}
+        <h1>Welcome to {{access}} Album: {{album_title}}</h1>
+        <h2>Album Owner: {{album_owner}}</h2>
+    {% else %}
+        <div>
+        Hello, you are trying to access a private album as a guest. Please login and see if you have access rights to this album.
+        </div>
+    {% endif %}
+    {% if edit %}
+        {% if not access_denied %}
+            {% if loggedin %}
+            <form action="" method='post' />
+                <input type="text" name='new_title' />
+                <input type="submit" name="op" value="Change Title" />
+            </form>
+            <form action="" method='post' />
+                <input type="text" name='new_permission' />
+                <input type="submit" name="op" value="Change Permission" />
+            </form>
+
+            <form action="/olvk4/pa3/album" method='get' />
+                <input type="hidden" name='id' value={{albumid}} />
+                <input type="submit" value="View My Album" />
+            </form>
+            {% endif %}
+            <p>The interface for /album/edit should have a table with columns: Username, Update Access.
+            The owner of an album should not appear in AlbumAccess for that album</p>
+            <div>
+                <html>
+                    <table style="width:100%" border="1">
+                        <tr>
+                            <th>Picture</th>
+                            <th>Caption</th>
+                            <th>Upload Date</th>
+                            <th>Delete</th>
+                        </tr>
+                        {% for items in pictures %}
+                            <tr>
+                                <td><a href="/olvk4/pa3/pic?id={{items.picid}}" ><img src="/static{{items.url}}" width=64px height=64px></a></td>
+                                <td>{{items.caption}}</td>
+                                <td>{{items.date}}</td>
+                                <td><form action="" method="post">
+                                    <input type="hidden" name = "picid" value="{{items.picid}}">
+                                    <input type="submit" name="op" value="Delete">
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+
+                    You should also have table of username and update access columns.
+                    You should see who currently has access and have option to revoke.
+                    At the bottom you can add new user permission.
+
+                    <form action="" method="post" enctype="multipart/form-data">
+                        <div>Add a Picture:</div><br>
+                        <input type="file" name="pic" accept="image/jpg,image/bmp,image/gif,image/png">
+                        <br>
+                        caption:<br>
+                        <input type="text" name="caption">
+                        <input type="submit" name = "op" value="Upload">
+                    </form>
+
+                    {% if access == 'private' %}
+                        <table style="width:100%" border="1">
+                            <tr>
+                                <th>Username</th>
+                                <th>Update Access</th>
+                            </tr>
+                            {% for items in users_with_access %}
+                                <tr>
+                                    <td>{{items.username}}</td>
+                                    <td><form action="" method="post">
+                                            <input type="hidden" name="revokeUser" value="{{items.username}}">
+                                            <input type="submit" name="op" value="revoke">
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <td><form method="post" id="accessForm">
+                                    New: 
+                                    <input type="text" name="newUserAccess">
+                                    </form>
+                                </td>
+                                <td>
+                                    <input type="hidden" name="username" value="{{username}}">
+                                    <input type="submit" class="btn btn-medium btn-primary" name="op" value="giveUserAccess" form="accessForm">
+                                </td>
+                                <td></td>
+                            </tr>
+                        </table>
+                        {% if cannotGiveAccess %}
+                            <h3> ERROR: This username does not exist: {{usernameDNE}}</h3>
+                        {% endif %}
+                        {% if alreadyHasAccess%}
+                            <h3> ERROR: This user already has access: {{usernameAE}}</h3>
+                        {% endif %}
+                    {% endif %}
+
+                </html>
+            </div>
+            </br>
+        {% endif %}
+    {% else %}
+        {% if not access_denied %}
+            {% if session_username == album_owner %}
+            <form action="/olvk4/pa3/album/edit" method='get' />
+                <input type="hidden" name='id' value={{albumid}} />
+                <input type="submit" value="Edit This Album" />
+            </form>
+            {% endif %}
+            <p> In /album/edit, the user should be able to edit the access permission for the Album table.
+            Only the album's owner should be able to modify the album users' access permissions.
+            If the album is not public, on /album/edit, you should have a table that is only displayed for the owner
+            where the album's owner can view permissions of everyone with access to the album and type in a username
+            to grant permissions.
+            Public albums should not display this table.
+            <div>
+                <html>
+                    <table style="width:100%" border="1">
+                        <tr>
+                            <th>Picid</th>
+                            <th>Image</th>
+                            <th>Caption</th>
+                            <th>Upload Date</th>
+                        </tr>
+                    {% for items in pictures %}
+                        <tr>
+                            <td>{{items.picid}}</td>
+                            <td><a href="/olvk4/pa3/pic?id={{items.picid}}" ><img src="/static{{items.url}}" width=64px height=64px></a></td>
+                            <td>{{items.caption}}</td>
+                            <td>{{items.date}}</td>
+                        </tr>
+                    {% endfor %}
+                    </table>
+                </html>
+            </div>
+            </br>
+        {% endif %}
+    {% endif %}
+    {% if loggedin %}
+        <form action="/olvk4/pa3/albums" method='get' />
+            <input type="hidden" name='username' value={{username}} />
+            <input type="submit" value="View My Albums" />
+        </form>
+        {% if not edit %}
+        <form action="/olvk4/pa3/albums/edit" method='get' />
+            <input type="hidden" name='username' value={{username}} />
+            <input type="submit" value="Edit My Albums" />
+        </form>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}

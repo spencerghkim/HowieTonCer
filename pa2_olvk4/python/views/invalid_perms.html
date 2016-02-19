@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block cont %}
+    <li role="presentation">Logged in as {{session_username}}</li>
+    <li role="presentation" ><a href="/olvk4/pa2/">Home</a></li>
+    <li role="presentation"><a href="/olvk4/pa2/user/edit">Edit My Account</a></li>
+    <li role="presentation"><a href="/olvk4/pa2/albums">My Albums</a></li>
+    <li role="presentation"><a href="/olvk4/pa2/logout">Sign Out</a></li>
+
+{% endblock %}
+
+{% block content %}
+
+<h1>Invalid Permissions</h1>
+<p>You do not have permission to view this page</p>
+
+{% endblock %}

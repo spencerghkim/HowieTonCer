@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block cont %}
+	<li role="presentation">Viewing as spectator</li>
+       <li role="presentation" ><a href="/olvk4/pa3/">Home</a></li>
+{% endblock %}
+
+{% block content %}
+
+<h1>Session Expired</h1>
+<p>Your Session has expired. Please log in.</p>
+
+<a href="/olvk4/pa3/user/login?path={{path}}"><button id="btnSignUp" class="btn btn-large btn-primary" type="button">Log in</button></a>
+
+<br>
+<a href="/olvk4/pa3/user">Sign up</a>
+
+
+{% endblock %}

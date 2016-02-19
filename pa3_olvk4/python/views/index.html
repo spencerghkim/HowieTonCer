@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block cont %}
+    <li role="presentation" ><a href="/olvk4/pa3/">Home</a></li>
+    {% if loggedin %}
+        <li role="presentation"><a href="/olvk4/pa3/user/edit">Edit My Account</a></li>
+        <li role="presentation"><a href="/olvk4/pa3/albums">My Albums</a></li>
+        <li role="presentation"><a href="/olvk4/pa3/logout">Sign Out</a></li>
+    {% else %}
+        <li role="presentation"><a href="/olvk4/pa3/user/login">Sign In</a></li>
+        <li role="presentation"><a href="/olvk4/pa3/user">Sign Up</a></li>
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <h1>INDEX</h1>
+    <div class="center">
+    {% if loggedin %}
+        <div> SENSITIVE: Logged in as {{session_username}} </div>
+
+        {% if personal_albums_flag %}
+        <div><h4>Check out your personal albums: <a href="/olvk4/pa3/albums"><button id="btnSignUp" class="btn btn-medium btn-primary" type="button">View Albums</button></a><a href="/olvk4/pa3/albums/edit"><button id="btnSignUp" class="btn btn-medium btn-primary" type="button">Edit Albums</button></a></h4>
+            {% for albums in personal_albums %}
+                <a href="/olvk4/pa3/album?id={{albums.albumid}}">{{albums.title}}</a></br>
+            {% endfor %}
+        </div>
+        {% else %}
+            <h4>You don't own an album. <a href="/olvk4/pa3/albums/edit">Create an album here</a></h4>
+        {% endif %}
+
+        {% if accessible_private_albums_flag %}
+            <div><h4>Check out private albums you have special access to:</h4><br>
+                {% for albums in accessible_private_albums %}
+                    <a href="/olvk4/pa3/album?id={{albums.albumid}}">{{albums.title}} - OWNER: {{albums.username}}</a></br>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div><h4>You don't have access to anyone else's private album.</h4></div>
+        {% endif %}
+
+        {% if public_albums_flag %}
+            <div><h4>Check out these public albums:</h4> <br>
+                {% for albums in public_albums %}
+                    <a href="/olvk4/pa3/album?id={{albums.albumid}}">{{albums.title}} - OWNER: {{albums.username}}</a> <br>
+                {% endfor %}
+            </div>
+        {% else %}
+            <h4>There are no public albums available at this time.</h4>
+        {% endif %}
+
+    </div>
+
+    {% else %} 
+        <h1> Welcome to Fakebook! </h1>
+        <p> Here on Fakebook, you get to create and edit your own albums as well as view albums from millions of people worldwide!</p>
+        <p> If you have not sign up, please sign up now!</p>
+        <p> <a href="/olvk4/pa3/user">Sign Up Now!</a> </p> 
+        <div> 
+            Or check out these public albums: <br>
+            <a href="/olvk4/pa3/albums">Public Albums</a>
+        </div>
+    {% endif %}
+{% endblock %}
+

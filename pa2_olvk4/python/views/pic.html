@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block cont %}
+    <li role="presentation" ><a href="/olvk4/pa2/">Home</a></li>
+    {% if not loggedin %}
+    <li role="presentation">Viewing as spectator</li>
+    {% else %}
+    <li role="presentation">Logged in as {{session_username}}</li>
+    <li role="presentation"><a href="/olvk4/pa2/user/edit">Edit My Account</a></li>
+    <li role="presentation"><a href="/olvk4/pa2/albums?username={{username}}">My Albums</a></li>
+    <li role="presentation"><a href="/olvk4/pa2/logout">Sign Out</a></li>
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <h1>PIC</h1>
+    <p class="important">
+      Welcome!
+    </p>
+ 	<h3>{{picid}}</h3>
+	<img src="/static{{url}}" alt="{{picid}}">
+	<div>{{caption}}</div>
+	<br>
+	{% if authorized %}
+		<form action="/olvk4/pa2/pic?id={{picid}}" method='post'>
+			New caption:
+        	<input type="text" name="caption">
+        	<input type="submit" class="btn btn-medium btn-primary" name="edit" value="Edit Caption">
+    	</form>
+    {% endif %}
+	
+	<a href="/olvk4/pa2/album?id={{albumid}}"><button id="btnAlbum" class="btn btn-medium btn-primary" type="button">Back to Album</button></a>
+
+	{% if prevflag %}
+		<a href="/olvk4/pa2/pic?id={{previd}}"><button id="btnPrev" class="btn btn-medium btn-primary" type="button">prev</button></a>
+	{% else %}
+		<button id="btnPrev" class="btn btn-medium btn-primary" type="button" disabled="disabled">prev</button>
+	{% endif %}
+	{% if nextflag %}
+		<a href="/olvk4/pa2/pic?id={{nextid}}"><button id="btnNext" class="btn btn-medium btn-primary" type="button">next</button></a>
+	{% else %}
+		<button id="btnNext" class="btn btn-medium btn-primary" type="button" disabled="disabled">next</button>
+	{% endif %}
+
+
+	
+
+{% endblock %}

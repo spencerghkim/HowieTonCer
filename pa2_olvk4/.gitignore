@@ -1,0 +1,7 @@
+.DS_Store
+.Python
+python/.DS_Store
+python/app/__init__.pyc
+python/controllers/*.pyc
+python/tmpfiles/
+venv/
