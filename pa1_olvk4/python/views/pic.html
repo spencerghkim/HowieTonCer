@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block cont %}
+    <li role="presentation" ><a href="/olvk4/pa1/">Home</a></li>
+    <li role="presentation">Greetings {{username}}</li>
+{% endblock %}
+{% block content %}
+    <h1>PIC</h1>
+    <p class="important">
+      Welcome!
+    </p>
+ 	<h3>{{picid}}</h3>
+	<img src="/static{{url}}" alt="{{picid}}">
+
+	<br>
+	
+	<a href="/olvk4/pa1/album?id={{albumid}}"><button id="btnAlbum" class="btn btn-medium btn-primary" type="button">Back to Album</button></a>
+
+	{% if prevflag %}
+		<a href="/olvk4/pa1/pic?id={{previd}}"><button id="btnPrev" class="btn btn-medium btn-primary" type="button">prev</button></a>
+	{% else %}
+		<button id="btnPrev" class="btn btn-medium btn-primary" type="button" disabled="disabled">prev</button>
+	{% endif %}
+	{% if nextflag %}
+		<a href="/olvk4/pa1/pic?id={{nextid}}"><button id="btnNext" class="btn btn-medium btn-primary" type="button">next</button></a>
+	{% else %}
+		<button id="btnNext" class="btn btn-medium btn-primary" type="button" disabled="disabled">next</button>
+	{% endif %}
+
+
+	
+
+{% endblock %}

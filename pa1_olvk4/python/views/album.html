@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block cont %}
+    <li role="presentation" ><a href="/olvk4/pa1/">Home</a></li>
+    <li role="presentation">Greetings {{username}}</li>
+{% endblock %}
+{% block content %}
+    <h1>Welcome to Album: {{album_title}}</h1>
+    {% if edit %}
+    <form action="/olvk4/pa1/album" method='get' />
+        <input type="hidden" name='id' value={{albumid}} />
+        <input type="submit" value="View This Album" />
+    </form>
+        <div>
+            <html>
+                <table style="width:100%" border="1">
+                    <tr>
+                        <th>Picture</th>
+                        <th>Picid</th>
+                        <th>Upload Date</th>
+                        <th>Delete</th>
+                    </tr>
+                    {% for items in pictures %}
+                        <tr>
+                            <td><img src="/static{{items.url}}" width=64px height=64px></td>
+                            <td>{{items.picid}}</td>
+                            <td>{{items.date}}</td>
+                            <td><form action="" method="post">
+                                <input type="hidden" name = "picid" value="{{items.picid}}">
+                                <input type="submit" name="op" value="Delete">
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+                <form action="" method="post" enctype="multipart/form-data">
+                    <div>Add a Picture:</div><br>
+                    <input type="file" name="pic" accept="image/jpg,image/bmp,image/gif,image/png">
+                    <br>
+                    caption:<br>
+                    <input type="text" name="caption">
+                    <input type="submit" name = "op" value="Upload">
+                </form>
+            </html>
+        </div>
+        </br>
+    {% endif %}
+    {% if not edit %}
+        <form action="/olvk4/pa1/album/edit" method='get' />
+            <input type="hidden" name='id' value={{albumid}} />
+            <input type="submit" value="Edit This Album" />
+        </form>
+        <div>
+            <html>
+                <table style="width:100%" border="1">
+                    <tr>
+                        <th>picid</th>
+                        <th>image</th>
+                    </tr>
+                {% for items in pictures %}
+                    <tr>
+                        <td>{{items.picid}}</td>
+                        <td><a href="/olvk4/pa1/pic?id={{items.picid}}" ><img src="/static{{items.url}}" width=64px height=64px></a></td>
+                    </tr>
+                {% endfor %}
+                </table>
+            </html>
+        </div>
+        </br>
+    {% endif %}
+    <form action="/olvk4/pa1/albums" method='get' />
+        <input type="hidden" name='username' value={{username}} />
+        <input type="submit" value="View My Albums" />
+    </form>
+    <form action="/olvk4/pa1/albums/edit" method='get' />
+        <input type="hidden" name='username' value={{username}} />
+        <input type="submit" value="Edit My Albums" />
+    </form>
+
+{% endblock %}

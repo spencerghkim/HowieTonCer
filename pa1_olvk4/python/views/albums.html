@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block cont %}
+    <li role="presentation" ><a href="/olvk4/pa1/">Home</a></li>
+    <li role="presentation">Greetings {{username}}</li>
+{% endblock %}
+{% block content %}
+<div> <h2>Welcome to</br><b>{{username}}</b>'s Albums!</h2></div>
+    {% if edit %}
+    	<div>
+            <html>
+                <head><title>HTML Tables</title></head>
+                <body>
+                <table border="1">
+        			<tr>
+                    	<th>Album</th>
+                    	<th>Edit</th>
+                    	<th>Delete</th>
+                	</tr>
+                {% for item in albumids %}
+               		<tr>
+                		<td>{{item.title}}</td>
+                    	<td><a href="/olvk4/pa1/album/edit?id={{item.albumid}}"><button id="btnSignUp" class="btn btn-medium btn-primary" type="button">Edit</button></a></td>
+                    	<td><form method="post">
+                    		<input type="hidden" name="albumid" value="{{item.albumid}}">
+                    		<input type="submit" class="btn btn-medium btn-primary" name="op" value="Delete">
+                    	</form> </td>
+                	</tr>
+                {% endfor %}
+                <div>
+                	<tr>
+                		<td><form method="post" id="form2">
+                			New: 
+                			<input type="text" name="title">
+                			</form>
+                		</td>
+                		<td>
+                			<input type="hidden" name="username" value="{{username}}">
+                			<input type="submit" class="btn btn-medium btn-primary" name="op" value="Add" form="form2">
+                		</td>
+                		<td></td>
+                	</tr>
+        		</div>
+                </table>
+                </body>
+            </html>
+        </div>
+        <br>
+    {% endif %}
+	{% if not edit%}
+        {% if albumsflag %}
+        <div>
+            <html>
+                <head><title>HTML Tables</title></head>
+                <body>
+                <table border="1">
+                <tr>
+                    <td>Title</td>
+                    <td>Creation Date</td>
+                    <td>Last Modified Date</td>
+                </tr>
+                {% for item in albumids %}
+                <tr>
+                    <td><a href="/olvk4/pa1/album?id={{item.albumid}}"><button id="btnSignUp" class="btn btn-medium btn-primary" type="button">{{item.title}}</button></a></td>
+                    <td>{{item.created}}</td>
+                    <td>{{item.lastupdated}}</td>
+                </tr>
+                {% endfor %}
+                </table>
+                </body>
+            </html>
+        </div>
+        {% else %}
+        <p> {{username}} has no albums... </p>
+        {% endif %}
+        <br>
+	{% endif %}
+    {% if edit %}
+    <form action="/olvk4/pa1/albums" method='get' />
+        <input type="hidden" name='username' value={{username}} />
+        <input type="submit" value="View My Albums" />
+    </form>
+    {% else %}
+    <form action="/olvk4/pa1/albums/edit" method='get' />
+        <input type="hidden" name='username' value={{username}} />
+        <input type="submit" value="Edit My Albums" />
+    </form>
+    {% endif %}
+{% endblock %}

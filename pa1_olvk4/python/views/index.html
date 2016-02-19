@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block cont %}
+    <li role="presentation" ><a href="/olvk4/pa1/">Home</a></li>
+    {% if loggedin %}
+        <li role="presentation">Logged in as {{username}}</li>
+    {% else %}
+        <li role="presentation" class="disabled"><a href="/olvk4/pa1/">Sign In</a></li>
+        <li role="presentation" class="disabled"><a href="/olvk4/pa1/">Sign Up</a></li>
+    {% endif %}
+{% endblock %}  
+{% block content %}
+    <h1>INDEX</h1>
+    <p class="center">
+    {% if not loggedin %}
+        Welcome to Fakebook Beta. Our Sign In and Sign Up features are disabled for now. 
+    {% endif %}
+    </p>
+
+    {% if loggedin %} 
+        <div>Login as <b>{{username}}</b> successful! </div> <br>
+        <a href="/olvk4/pa1/albums?username={{username}}"><button id="btnSignUp" class="btn btn-medium btn-primary" type="button">View Albums</button></a>
+
+        <a href="/olvk4/pa1/albums/edit?username={{username}}"><button id="btnSignUp" class="btn btn-medium btn-primary" type="button">Edit Albums</button></a>
+
+    {% else %}
+        <div> Login as: </div>
+        {% for user in users %}
+            <a href="/olvk4/pa1/?username={{user.username}}">{{user.username}}</a><br>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
