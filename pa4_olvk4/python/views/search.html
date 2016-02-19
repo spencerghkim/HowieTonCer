@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block cont %}
+    <li role="presentation" ><a href="/olvk4/pa4/search">Home</a></li>
+{% endblock %}
+{% block content %}
+    <!-- search bar -->
+
+    <form method="POST">
+    	Please enter your search query here: 
+    	<input type="text" name="query" required>
+    	<a href="/olvk4/pa4/search?q={{query}}"><input type="submit" class="btn btn-medium btn-primary" value="Search"></a>
+    </form>
+    {% if queried %}
+    	{% if no_result %}
+    		Sorry, please insert another query. There was no query result.
+    	{% else %}
+    		Number of hits: {{num_hits}}
+	    	<table>
+		    	{% for items in queried_data %}
+			        <tr>
+			            <td><a href="/olvk4/pa4/search?q={{items.caption}}" ><img src="/static/{{items.url}}" width=64px height=64px></a></td>
+			            <td>{{items.caption}}</td>
+			            <td>{{items.datetaken}}</td>
+			            <td>{{items.sequencenum}}</td>
+			        </tr>
+			    {% endfor %}
+			</table>
+    	{% endif %}
+    {% endif %}
+{% endblock %}
+

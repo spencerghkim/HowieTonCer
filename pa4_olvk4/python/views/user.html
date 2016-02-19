@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block cont %}
+	{% if loggedin %}
+		<li role="presentation">Logged in as {{session_username}}</li>
+	    <li role="presentation"><a href="/olvk4/pa3/">Home</a></li>
+	    <li role="presentation"><a href="/olvk4/pa3/user/edit">Edit My Account</a></li>
+	    <li role="presentation"><a href="/olvk4/pa3/albums?username={{username}}">My Albums</a></li>
+	    <li role="presentation"><a href="/olvk4/pa3/logout">Sign Out</a></li>
+    {% else %}
+    	<li role="presentation">Viewing as spectator</li>
+    	<li role="presentation"><a href="/olvk4/pa3/">Home</a></li>
+    	{% if not signup %}
+    		<li role="presentation"><a href="/olvk4/pa3/user">Sign Up</a></li>
+    	{% else %}
+    		<li role="presentation"><a href="/olvk4/pa3/user/login">Sign In</a></li>
+    	{% endif %}
+    {% endif %}
+{% endblock %}
+{% block content %}
+	<!--{% if loggedin %} do we need this????
+		<li role="presentation">Logged in as {{username}}</li>
+	{% endif %} -->
+
+	{% if edit %}
+		<h1>/user/edit -- SENSITIVE</h1>
+
+
+		<h2>Welcome to {{username}}'s Edit Page </h2>
+
+
+
+		The user should be able to change his/her firstname, lastname, password, and e-maill address.
+		NOT username.
+		Validate the input values both on the client-side as well as server-side.
+		Keep a link on this page to delete the user's account.
+		---This should remove all associated pictures, albums, as well as access to other users' albums.
+
+		create /user/delete endpoint which accepts only POST requests may be the easiest. Then redirect the user back to the public homepage
+		<form method="POST" id="editAccount">
+			Change First Name: <input type="text" name="firstname" maxlength="20" placeholder="{{firstname}}"></br>
+
+			Change Last Name: <input type="text" name="lastname" maxlength="20"placeholder="{{lastname}}"></br>
+
+	        Change password: <input type="password" id = "password1" name="password1" pattern="(?=.*\d)(?=.*[a-z]).{5,15}" title="Password should be at least 5 and at most 15 characters long. Must contain at least one digit and at least one letter. Only use letters, digits, and underscores."></br>
+
+			Confirm your password: <input type="password" id = "password2" name="password2" pattern="(?=.*\d)(?=.*[a-z]).{5,15}" title="Please enter the same password" onkeyup="checkPass(); return false;"><span id="confirmMessage" class="confirmMessage"></span></br>
+
+			Change Email: <input type="email" name="email" maxlength="20" placeholder="{{email}}"></br>
+			<input type="submit" name="op" class="btn btn-medium btn-primary" value="Edit" id=signupbtn>
+		</form>
+
+
+
+		<form method="POST" id="deleteAccount">
+			<input type="hidden" name="username" value="{{username}}">
+			<input type="submit" name="op" class="btn btn-medium btn-primary" value="Delete Account">
+		</form>
+	{% endif %}
+	{% if login %}
+		<head>
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		    <!-- <link href="static/bootstrap.min.css" rel="stylesheet" media="screen"> -->
+		</head>
+		<body>
+		    <div class="container">
+		    <h1>Please login</h1>
+		    <br>
+		    <form method="post" id="login">
+					Username: <input type="text" placeholder="Username" name="username" maxlength="20" minlength="3" pattern="\w+)" required></br>
+					Password: <input type="password" placeholder="Password" name="loginpassword" pattern="(?=.*\d)(?=.*[a-z]).{5,15}" required></br>
+					<input type="submit" class="btn btn-medium btn-primary" value="Login" form="login">
+			</form>
+			<!-- <a href="/olvk4/pa3/?username={{username}}">
+					<input type="hidden" name="username" value="{{username}}">
+					<input type="hidden" name="password" value="{{password}}">
+					<input type="submit" class="btn btn-medium btn-primary" value="Login" form="1">
+			</a> -->
+			<form method="get" id="forgotpass">
+				<input type="submit" class="btn btn-medium btn-primary" value="Forgot my Password">
+			</form>
+			{% if nameerror %}
+				<p>Username doesn't exist...</p>
+			{% endif %}
+			{% if userError %}
+				<p>Username/password combination invalid!!! </p>
+			{% endif %}
+			{% if error %}
+					<p class="error"><strong>Error:</strong> {{ error }}</p>
+			{% endif %}
+			</div>
+		</body>
+	
+<!-- 
+IS LOGGED IN
+	<form action="/olvk4/pa3/albums" method='get' />
+		<input type="hidden" name='username' value={{username}} />
+		<input type="submit" class="btn btn-medium btn-primary" value="View My Albums" />
+    </form>
+    <form action="/olvk4/pa3/albums/edit" method='get' />
+		<input type="hidden" name='username' value={{username}} />
+		<input type="submit" class="btn btn-medium btn-primary" value="Edit My Albums" />
+    </form> -->
+
+	{% endif %}
+
+	{% if signup %}
+	<h3>If a session already exists redirect the user to /user/edit.</h3>
+	<h5> THIS IS A PUBLIC PAGE</h5>
+	<h1>Sign Up for Fakebook</h1>
+    <h2>It's free and always will be.</h2>
+
+    <form action="/olvk4/pa3/user" method='POST'>
+		First Name: <input type="text" name="firstname" maxlength="20" required></br>
+
+		Last Name: <input type="text" name="lastname" maxlength="20" required></br>
+
+		Choose your Username: <input type="text" name="username" maxlength="20" minlength="3" pattern="\w+)" required></br>
+
+		<!-- we need to check password1 vs password2 here in client and server side. we can use a little bit of javascript -->
+		<!-- check server side to prevent any malicious code from sending an invalid password to the server -->
+		<!-- we need to check and make sure password meets to security requirement with HTML5 not javascript -->
+
+        Create a password: <input type="password" id = "password1" name="password1" pattern="(?=.*\d)(?=.*[a-z]).{5,15}" title="Password should be at least 5 and at most 15 characters long. Must contain at least one digit and at least one letter. Only use letters, digits, and underscores." required></br>
+
+		Confirm your password: <input type="password" id = "password2" name="password2" pattern="(?=.*\d)(?=.*[a-z]).{5,15}" title="Please enter the same password" required onkeyup="checkPass(); return false;"><span id="confirmMessage" class="confirmMessage"></span></br>
+
+		Email: <input type="email" name="email" maxlength="20" placeholder="yourname@email.com" required>
+		
+		<input type="submit" name="signup" value="Sign Up" id="signupbtn" class="btn btn-primary">
+
+		</br>
+
+	</form>
+	</br>
+	{% if userError %}
+    	{% if signupfailed %}
+        	<div> Username already exists...</div>
+    	{% endif %}
+    {% endif %}
+    <!--{% if emailerr %}
+    	<div>Invalid email...</div>
+    {% endif %}-->
+    {% if passwderr %}
+	    <p> Password is not the same from server-side!!! </p>
+	{% endif %}
+	{% endif %}
+	</br>
+{% endblock %}

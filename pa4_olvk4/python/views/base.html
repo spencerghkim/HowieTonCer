@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+	<head>
+		<script type="text/javascript" src="/static/js/qwest.min.js"></script>
+		<script type="text/javascript" src="/static/js/caption.js"></script>
+		<script type="text/javascript" src="/static/js/favorites.js"></script>
+		<title>EECS485 Fakebook App</title>
+		<link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+		<link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+		<!-- <link href="/static/css/signup.css" rel="stylesheet"> -->
+
+		<!-- <link rel="stylesheet" href="/static/css/style.css" /> -->
+
+	</head>
+	<body>
+	{% block extrascripts %} <!-- This is where we'll load inline scripts specific for a given template -->
+	{% endblock %}
+
+		<div class="container">
+			<div class="header">
+				<nav>
+					<ul class="nav nav-pills pull-right">
+						{% block cont %}{% endblock %}
+					</ul>
+				</nav>
+				<h3 class="text-muted">EECS485 Fakebook App</h3>
+			</div>
+
+			<div class="center">
+				{% block content %}{% endblock %}
+				<br><br><a href="/olvk4/pa4/search">home</a>
+			</div>
+			<script type="text/javascript" src="/static/js/main.js"></script>
+ 
+			<!-- <div class="jumbotron">
+				<h1>Bucket List App</h1>
+				<form class="form-signin">
+				<label for="inputName" class="sr-only">Name</label>
+				<input type="name" name="inputName" id="inputName" class="form-control" placeholder="Name" required autofocus>
+				<label for="inputEmail" class="sr-only">Email address</label>
+				<input type="email" name="inputEmail" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+				<label for="inputPassword" class="sr-only">Password</label>
+				<input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
+				 
+				<button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button">Sign up</button>
+			</form>
+			</div> -->
+ 
+ 
+			<footer class="footer">
+				<p>&copy; Spencer Kim, Tony Sang Jun Park, Howard Mok 2015</p>
+			</footer>
+ 
+		</div>
+	</body>
+
+</html>
+

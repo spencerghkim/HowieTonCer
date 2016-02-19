@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% block cont %}
+
+    {% if loggedin %}
+        <li role="presentation">Logged in as {{session_username}}</li>
+        <li role="presentation" ><a href="/olvk4/pa3/">Home</a></li>
+        <li role="presentation"><a href="/olvk4/pa3/user/edit">Edit My Account</a></li>
+        <li role="presentation"><a href="/olvk4/pa3/albums">My Albums</a></li>
+        <li role="presentation"><a href="/olvk4/pa3/logout">Sign Out</a></li>
+    {% else %}
+        <li role="presentation">Viewing as guest</li>
+        <li role="presentation" ><a href="/olvk4/pa3/">Home</a></li>
+    {% endif %}
+{% endblock %}
+{% block content %}
+    {% if edit %}
+    <div> <h2>Welcome to</br><b>{{session_username}}</b>'s Edit Albums!</h2></div>
+        <div>
+            <html>
+                <head><title>HTML Tables</title></head>
+                <body>
+                <table border="1">
+                    <tr>
+                        <th>Album</th>
+                        <th>Access</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                {% for item in personal_albums %}
+                    <tr>
+                        <td><a href="/olvk4/pa3/album?id={{item.albumid}}">{{item.title}}</a></td>
+                        <td>{{item.access}}</td>
+                        <td><a href="/olvk4/pa3/album/edit?id={{item.albumid}}"><button id="btnSignUp" class="btn btn-medium btn-primary" type="button">Edit</button></a></td>
+                        <td><form method="post">
+                            <input type="hidden" name="albumid" value="{{item.albumid}}">
+                            <input type="submit" class="btn btn-medium btn-primary" name="op" value="Delete">
+                        </form> </td>
+                    </tr>
+                {% endfor %}
+                <div>
+                    <tr>
+                        <form method="post" id="form2">
+                        <td>
+                            New: 
+                            <input type="text" name="title">
+                        </td>
+                        <td>
+                            <input type="text" name="xcess">
+                        </td>
+                        </form>
+                        <td>
+                            <input type="submit" class="btn btn-medium btn-primary" name="op" value="Add" form="form2">
+                        </td>
+                        <td></td>
+                    </tr>
+                </div>
+                </table>
+                </body>
+            </html>
+        </div>
+        <br>
+    {% endif %}
+    {% if not edit%}
+        {% if loggedin %}
+            {% if personal_albums_flag %}
+                <div>
+                    <!-- Personal Albums Table -->
+                    <table border="1">
+                        <caption>Your Albums</caption>
+                        <tr>
+                            <td>Title</td>
+                            <td>Edit</td>
+                            <td>Creation Date</td>
+                            <td>Last Modified Date</td>
+                        </tr>
+                        {% for item in personal_albums %}
+                        <tr>
+                            <td><a href="/olvk4/pa3/album?id={{item.albumid}}"><button id="btnSignUp" class="btn btn-medium btn-primary" type="button">{{item.title}}</button></a></td>
+                            <td><a href="/olvk4/pa3/album/edit?id={{item.albumid}}"><button id="btnSignUp" class="btn btn-medium btn-primary" type="button">Edit</button></a></td>
+                            <td>{{item.created}}</td>
+                            <td>{{item.lastupdated}}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% else %}
+                <h4> You do not own an album at this moment</h4>
+            {% endif %}
+
+            {% if accessible_private_albums_flag %}
+                <div>
+                    <!-- Personal Albums Table -->
+                    <table border="1">
+                        <caption>Accessible Private Albums</caption>
+                        <tr>
+                            <td>Title</td>
+                            <td>Owner</td>
+                            <td>Creation Date</td>
+                            <td>Last Modified Date</td>
+                        </tr>
+                        {% for item in accessible_private_albums %}
+                        <tr>
+                            <td><a href="/olvk4/pa3/album?id={{item.albumid}}"><button id="btnSignUp" class="btn btn-medium btn-primary" type="button">{{item.title}}</button></a></td>
+                            <td>{{item.username}}</td>
+                            <td>{{item.created}}</td>
+                            <td>{{item.lastupdated}}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% else %}
+                <h4> You do have access to anyone else's private albums at this moment.</h4>
+            {% endif %}
+
+        {% endif %} <!-- This is the public page -->
+
+
+        {% if public_albums_flag %}
+            <body>
+                <table border="1">
+                    <caption>Public Albums</caption>
+                    <tr>
+                        <td>Title</td>
+                        <td>Creation Date</td>
+                        <td>Last Modified Date</td>
+                    </tr>
+                    {% for item in public_albums %}
+                    <tr>
+                        <td><a href="/olvk4/pa3/album?id={{item.albumid}}"><button id="btnSignUp" class="btn btn-medium btn-primary" type="button">{{item.title}}</button></a></td>
+                        <td>{{item.created}}</td>
+                        <td>{{item.lastupdated}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </body>
+        {% else %}
+            <h4> No Public Albums Exist At This Time</h4>
+        {% endif %}
+    {% endif %}
+    {% if edit %}
+    <form action="/olvk4/pa3/albums" method='get' />
+        <input type="submit" value="View My Albums" />
+    </form>
+    {% else %}
+        {% if loggedin %}
+        <form action="/olvk4/pa3/albums/edit" method='get' />
+            <input type="submit" value="Edit My Albums" />
+        </form>
+        {% endif %}
+    {% endif %}
+{% endblock %}
