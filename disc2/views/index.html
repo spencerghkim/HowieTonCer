@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+
+    <title>Jinja2 Demos</title>
+</head>
+<div class="container">
+<body>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+   
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="/variables">variable example</a></li>
+        <li><a href="/loops">loop example</a></li>
+        <li><a href="/conditionals">conditionals example</a></li>
+        <li><a href="/blocks">blocks example</a></li>
+
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+{% block content%}
+<div class="jumbotron">
+<h2>Jinja2 Demos</h2>
+<p>Click links above for Jinja2 template examples</p>
+</div>
+{% endblock %}
+</div>
+</body>
+
+</html>
